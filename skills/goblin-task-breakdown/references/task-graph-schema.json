@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vveloxltd.com/schemas/task-graph-1.0.json",
+  "title": "Vulpes Velox Executable Task Graph",
+  "type": "object",
+  "required": ["schema_version", "graph_id", "input_mode", "task", "outcome", "done_when", "consumer", "granularity", "first_action_id", "nodes"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "graph_id": {"type": "string", "minLength": 1},
+    "input_mode": {"enum": ["task", "brain_dump"]},
+    "task": {"type": "string", "minLength": 1},
+    "outcome": {"type": "string", "minLength": 1},
+    "done_when": {"type": "string", "minLength": 1},
+    "consumer": {"enum": ["human", "mentiad", "vulpes_velox", "external"]},
+    "granularity": {"type": "integer", "minimum": 1, "maximum": 5},
+    "current_energy": {"type": ["string", "null"], "enum": ["low", "medium", "high", null]},
+    "available_time_min": {"type": ["integer", "null"], "minimum": 0},
+    "assumptions": {"type": "array", "items": {"type": "string"}, "default": []},
+    "prerequisites": {"type": "array", "items": {"type": "string"}, "default": []},
+    "first_action_id": {"type": "string", "minLength": 1},
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/node"}
+    },
+    "blockers": {"type": "array", "items": {"type": "string"}, "default": []},
+    "later": {"type": "array", "items": {"type": "string"}, "default": []}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "node": {
+      "type": "object",
+      "required": ["id", "type", "title", "status", "depends_on", "done_when", "execution", "side_effect", "requires_approval", "provenance", "commitment_status"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^T[0-9]+(?:\\.[0-9]+)*$"},
+        "parent_id": {"type": ["string", "null"]},
+        "path": {"type": "array", "items": {"type": "string"}},
+        "type": {"enum": ["action", "decision", "wait", "handoff", "checkpoint"]},
+        "title": {"type": "string", "minLength": 1},
+        "action": {"type": ["string", "null"]},
+        "status": {"enum": ["proposed", "ready", "blocked", "waiting", "in_progress", "done", "skipped"]},
+        "depends_on": {"type": "array", "items": {"type": "string"}},
+        "blocked_by": {"type": "array", "items": {"type": "string"}, "default": []},
+        "done_when": {"type": "string", "minLength": 1},
+        "estimate_min": {"type": ["integer", "null"], "minimum": 0},
+        "energy_required": {"type": ["string", "null"], "enum": ["low", "medium", "high", null]},
+        "friction": {
+          "type": "object",
+          "properties": {
+            "level": {"type": "integer", "minimum": 1, "maximum": 5},
+            "sources": {"type": "array", "items": {"type": "string"}}
+          },
+          "required": ["level", "sources"],
+          "additionalProperties": false
+        },
+        "tools": {"type": "array", "items": {"type": "string"}, "default": []},
+        "execution": {"enum": ["manual", "agent", "either"]},
+        "side_effect": {"enum": ["none", "read", "write", "external", "destructive"]},
+        "requires_approval": {"type": "boolean"},
+        "provenance": {"enum": ["user_stated", "inferred", "imported"]},
+        "commitment_status": {"enum": ["proposed", "confirmed"]}
+      },
+      "additionalProperties": false
+    }
+  }
+}
+
