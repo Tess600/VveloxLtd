@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "graph_id": "skill-first-draft",
+  "input_mode": "task",
+  "task": "Draft a task-breakdown skill",
+  "outcome": "A portable skill folder exists",
+  "done_when": "SKILL.md validates and one example graph passes its schema",
+  "consumer": "human",
+  "granularity": 3,
+  "current_energy": "medium",
+  "available_time_min": 30,
+  "assumptions": [],
+  "prerequisites": [],
+  "first_action_id": "T1",
+  "nodes": [
+    {
+      "id": "T1",
+      "parent_id": null,
+      "path": ["T1"],
+      "type": "action",
+      "title": "Open the skills directory",
+      "action": "Open the repository's skills directory in the editor",
+      "status": "ready",
+      "depends_on": [],
+      "blocked_by": [],
+      "done_when": "The skills directory is visible in the editor",
+      "estimate_min": 2,
+      "energy_required": "low",
+      "friction": {"level": 1, "sources": []},
+      "tools": ["editor"],
+      "execution": "either",
+      "side_effect": "read",
+      "requires_approval": false,
+      "provenance": "inferred",
+      "commitment_status": "confirmed"
+    }
+  ],
+  "blockers": [],
+  "later": []
+}
+
